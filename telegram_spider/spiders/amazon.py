@@ -3,7 +3,8 @@ import scrapy
 
 class AmazonSpider(scrapy.Spider):
     name = 'amazon'
-    start_urls = ['https://www.amazon.com.mx/s?k=']
+    allowed_domains = ['www.amazon.com.mx']
+    start_urls = ['https://www.amazon.com.mx/']
 
     def parse(self, response):
         search = getattr(self, 'search_criteria', None)
@@ -14,8 +15,8 @@ class AmazonSpider(scrapy.Spider):
             splited_words = search.split(' ')
             separator = '+'
             parsed_word = separator.join(splited_words)
-            print(parsed_word)
-            return scrapy.Request(self.start_urls[0]+parsed_word, self.after_init)
+
+            return scrapy.Request(self.start_urls[0] + 's?k=' + parsed_word, self.after_init)
 
     def after_init(self, response):
         result = []
